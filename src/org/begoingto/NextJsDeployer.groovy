@@ -1,12 +1,12 @@
 package org.begoingto
 
-class NodeJsDeployer {
+class NextJsDeployer {
 
     def steps
     def script
     def nodeVersion
 
-    NodeJsDeployer(steps, script, nodeVersion) {
+    NextJsDeployer(steps, script, nodeVersion) {
         this.steps = steps
         this.script = script
         this.nodeVersion = nodeVersion
