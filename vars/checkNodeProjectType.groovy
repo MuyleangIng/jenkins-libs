@@ -1,20 +1,32 @@
 // vars/checkProjectType.groovy
 
 def call() {
-	// Read package.json file
-	def packageJson = readPackageJson()
+	
+	// Attempt to read package.json file
+	def packageJson = null
+	try {
+		packageJson = readPackageJson()
+		echo "package.json ${packageJson}"
+	} catch (Exception e) {
+		echo "Failed to read or parse package.json: ${e.getMessage()}"
+		return 'Unknown'
+	}
 
-	// Check for key dependencies
+	 // Ensure packageJson and its dependencies or devDependencies are not null
+	if (packageJson == null || (packageJson.dependencies == null && packageJson.devDependencies == null)) {
+		echo "No package.json found or dependencies/devDependencies are not defined."
+		return 'Unknown'
+	}
+
+	// Check for key dependencies to determine project type
 	def projectType = 'Unknown'
-	if (packageJson.dependencies.'next') {
+	if (hasDependency(packageJson, 'next')) {
 		projectType = 'Next.js'
-	} else if (packageJson.dependencies.'react') {
+	} else if (hasDependency(packageJson, 'react')) {
 		projectType = 'React'
-	} else if (packageJson.dependencies.'vue') {
-		projectType = 'Vue.js'
-	} else if (packageJson.dependencies.'nuxt') {
-		projectType = 'Nuxt.js'
-	} else if (packageJson.dependencies.'@angular/core') {
+	} else if (hasDependency(packageJson, 'vue') || hasDependency(packageJson, 'nuxt')) {
+		projectType = hasDependency(packageJson, 'nuxt') ? 'Nuxt.js' : 'Vue.js'
+	} else if (hasDependency(packageJson, '@angular/core')) {
 		projectType = 'Angular'
 	}
 
