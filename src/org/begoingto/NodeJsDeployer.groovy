@@ -14,7 +14,9 @@ class NodeJsDeployer {
 
     def deploy(String sourceUrl, String branch) {
 
-        script.echo "Starting deployment of Next.js app from ${sourceUrl} on branch ${branch}"
+        script.echo "Starting deployment of Node app from ${sourceUrl} on branch ${branch}"
+        steps.sh "ls -lrt"
+        steps.sh "pwd"
 
         // Use the defined Node.js tool
         def nodeHome = steps.tool(name: this.nodeVersion)
@@ -63,7 +65,7 @@ class NodeJsDeployer {
     }
 
     private String readPackageJson() {
-        def packageJsonText = readFile 'package.json'
+        def packageJsonText = readFile(file: './package.json')
         def jsonSlurper = new groovy.json.JsonSlurper()
         return jsonSlurper.parseText(packageJsonText)
     }
