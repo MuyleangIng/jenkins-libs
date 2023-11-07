@@ -19,14 +19,15 @@ class NodeJsDeployer {
         // Use the defined Node.js tool
         def nodeHome = steps.tool(name: this.nodeVersion)
 
+        script.echo "========= check project type in NodeJsDeployer ============"
+        def pType = this.getProjectType()
+        script.echo "Project type is: ${pType} 💯✅"
+
         script.withEnv(["PATH+NODE=${nodeHome}/bin"]) {
             // check node version
             steps.sh "node --version"
-            steps.sh "npm install"
-            steps.echo "========= check project type in NodeJsDeployer ============"
-            def projectType = this.getProjectType()
-            steps.echo "Project type is: ${projectType} 💯✅"
-
+            steps.sh "npm --version"
+            script.echo "Project Type: ${pType}"
         }
     }
 
