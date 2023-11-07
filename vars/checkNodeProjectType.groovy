@@ -39,3 +39,8 @@ private readPackageJson() {
 	def jsonSlurper = new groovy.json.JsonSlurper()
 	return jsonSlurper.parseText(packageJsonText)
 }
+
+private boolean hasDependency(def packageJson, String key) {
+  // Check both dependencies and devDependencies for the specified key
+  return (packageJson.dependencies?.containsKey(key) || packageJson.devDependencies?.containsKey(key))
+}
