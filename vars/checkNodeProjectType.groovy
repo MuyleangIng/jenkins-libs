@@ -21,13 +21,13 @@ def call() {
 	// Check for key dependencies to determine project type
 	def projectType = 'Unknown'
 	if (hasDependency(packageJson, 'next')) {
-		projectType = 'Next.js'
+		projectType = 'next'
 	} else if (hasDependency(packageJson, 'react')) {
-		projectType = 'React'
+		projectType = 'react'
 	} else if (hasDependency(packageJson, 'vue') || hasDependency(packageJson, 'nuxt')) {
-		projectType = hasDependency(packageJson, 'nuxt') ? 'Nuxt.js' : 'Vue.js'
+		projectType = hasDependency(packageJson, 'nuxt') ? 'nuxt' : 'vue'
 	} else if (hasDependency(packageJson, '@angular/core')) {
-		projectType = 'Angular'
+		projectType = 'angular'
 	}
 
 	echo "The project is of type: ${projectType}"

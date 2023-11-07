@@ -24,6 +24,8 @@ class NodeJsDeployer {
             steps.sh "node --version"
             steps.sh "npm --version"
             script.echo "Project type: ${projectType} 💯✅"
+            steps.sh "npm install"
+            steps.sh "npm run build"
         }
     }
 }
