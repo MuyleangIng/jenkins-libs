@@ -10,8 +10,10 @@ def call() {
 		projectType = 'Next.js'
 	} else if (packageJson.dependencies.'react') {
 		projectType = 'React'
-	} else if (packageJson.dependencies.'vue' || packageJson.dependencies.'nuxt') {
-		projectType = packageJson.dependencies.'nuxt' ? 'Nuxt.js' : 'Vue.js'
+	} else if (packageJson.dependencies.'vue') {
+		projectType = 'Vue.js'
+	} else if (packageJson.dependencies.'nuxt') {
+		projectType = 'Nuxt.js'
 	} else if (packageJson.dependencies.'@angular/core') {
 		projectType = 'Angular'
 	}
