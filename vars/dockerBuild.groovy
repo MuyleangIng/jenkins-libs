@@ -6,15 +6,16 @@ def call(String dockerfileDirectory, String imageName, String tag) {
     }
 
     // Define the full image name with tag
-    def fullImageName = "${imageName}:${tag}"
+    def fullImageName = "nd.begoingdev.me/${imageName}:${tag}"
 
     // Execute the Docker build command
     script {
-        docker.withRegistry('https://nd.begoingdev.me/', 'docker-hub-credentials') {
+        withDockerRegistry(credentialsId: 'nd.begoingdev.me', url: 'https://nd.begoingdev.me/') {
             // Change into the Dockerfile directory
             dir(dockerfileDirectory) {
                 // Building the Docker image
                 def customImage = docker.build(fullImageName, '--no-cache .')
+                sh "docker images"
             }
         }
     }
