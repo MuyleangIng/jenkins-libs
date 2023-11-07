@@ -27,7 +27,7 @@ class NodeJsDeployer {
             // check node version
             steps.sh "node --version"
             steps.sh "npm --version"
-            script.echo "Project Type: ${pType}"
+            script.echo "Project Type: ${pType}💻"
         }
     }
 
@@ -36,15 +36,15 @@ class NodeJsDeployer {
         def packageJson = null
         try {
             packageJson = readPackageJson()
-            echo "package.json ${packageJson}"
+            script.echo "package.json ${packageJson}"
         } catch (Exception e) {
-            echo "Failed to read or parse package.json: ${e.getMessage()}"
+            script.echo "Failed to read or parse package.json: ${e.getMessage()}"
             return 'Unknown'
         }
 
         // Ensure packageJson and its dependencies or devDependencies are not null
         if (packageJson == null || (packageJson.dependencies == null && packageJson.devDependencies == null)) {
-            echo "No package.json found or dependencies/devDependencies are not defined."
+            script.echo "No package.json found or dependencies/devDependencies are not defined."
             return 'Unknown'
         }
 
