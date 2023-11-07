@@ -1,7 +1,7 @@
-import org.begoingto.NextJsDeployer
+import org.begoingto.NodeJsDeployer
 
 def call(Map params){
     def nodeVersion = params.nodeVersion ?: 'nodejs-18.12.1'
-    def nextJsDeployer = new NextJsDeployer(steps, this, nodeVersion)
-    nextJsDeployer.deploy(params.source, params.branch)
+    def nodeDeployer = new NodeJsDeployer(steps, this, nodeVersion)
+    nodeDeployer.deploy(params.source, params.branch)
 }
