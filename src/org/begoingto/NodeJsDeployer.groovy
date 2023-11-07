@@ -23,7 +23,7 @@ class NodeJsDeployer {
             // check node version
             steps.sh "node --version"
             steps.sh "npm --version"
-            script.echo "Project type: ${projectType}"
+            script.echo "Project type: ${projectType} 💯✅"
         }
     }
 }
