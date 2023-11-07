@@ -12,7 +12,7 @@ class NodeJsDeployer {
         this.nodeVersion = nodeVersion
     }
 
-    def deploy(String sourceUrl, String branch) {
+    def deploy(String sourceUrl, String branch, String projectType) {
 
         script.echo "Starting deployment of Next.js app from ${sourceUrl} on branch ${branch}"
 
@@ -23,6 +23,7 @@ class NodeJsDeployer {
             // check node version
             steps.sh "node --version"
             steps.sh "npm --version"
+            script.echo "Project type: ${projectType}"
         }
     }
 }
