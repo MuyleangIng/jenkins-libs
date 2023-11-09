@@ -1,0 +1,21 @@
+---
+- name: Setup Domain Name
+  hosts: all
+  become: yes
+  gather_facts: true
+  tasks:
+    - name: "Add {{ domain_name }} to site-avialables config"
+      copy:
+        src: domain.conf
+        dest: "/etc/nginx/sites-available/{{ domain_name }}"
+      
+    - name: Link enable domain
+      command: "ln -sf /etc/nginx/sites-available/{{ domain_name }} /etc/nginx/sites-enabled/{{ domain_name }}"
+      notify:
+        - Reload Nginx
+        
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded

@@ -66,17 +66,22 @@ class Ansible {
 
     def setupDomainName(Map params){
         int port = params.targetPort.toInteger()
+        steps.echo "------------setup nginx config------------"
         writeNginxConfig(params.domainName, port)
+        steps.echo "------------end nginx config------------"
+
+        steps.echo "------------setup domain------------"
+        ansibleSetupDomain(params.domainName)
+        steps.echo "------------end domain------------"
     }
 
 
     private ansibleShExecute(String registryName, String imageName, String tag, String portExpose, String portOut) {
         def playbookContent = steps.libraryResource('ansible/deploy.yml')
-        steps.writeFile(file: 'playbook.yml', text: playbookContent)
-        steps.sh 'cat playbook.yml'
+        steps.writeFile(file: 'deploy.yml', text: playbookContent)
         steps.echo "-------------- Execute Ansible playbook --------------"
         steps.sh """
-        ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registryName} container_name=${imageName} port_expose=${portExpose} port_out=${portOut}"
+        ansible-playbook -i hosts.ini deploy.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registryName} container_name=${imageName} port_expose=${portExpose} port_out=${portOut}"
         """
         steps.echo "-------------- End Ansible playbook --------------"
     }
@@ -147,5 +152,15 @@ class Ansible {
         steps.writeFile(file: domainName, text: nginxContent)
         steps.sh "cat ${domainName}"
         steps.echo "-------------- End Nginx config --------------"
+    }
+
+    private ansibleSetupDomain(String domainName){
+        def playbookContent = steps.libraryResource('ansible/domain.yml')
+        steps.writeFile(file: 'domain.yml', text: playbookContent)
+        steps.echo "-------------- Execute Ansible playbook Domain --------------"
+        steps.sh """
+        ansible-playbook -i hosts.ini domain.yml -e "domain_name=${domainName}"
+        """
+        steps.echo "-------------- End Ansible playbook Domain --------------"
     }
 }
