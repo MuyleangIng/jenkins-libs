@@ -54,8 +54,8 @@ class Ansible {
         // write ansible hosts
         writeAnsibleHosts(params.hostIp, params.hostname, params.hostuser)
 
-        steps.sh 'ls -lrt'
-        steps.sh 'cat hosts.ini'
+        // steps.sh 'ls -lrt'
+        // steps.sh 'cat hosts.ini'
 
         steps.echo "Params: registryName: ${params.registryName}, imageName: ${params.imageName}, tag: ${params.tag}, portExpose: ${params.portExpose}, portOut: ${params.portOut}"
 
@@ -150,7 +150,7 @@ class Ansible {
         }
         """
         steps.writeFile(file: domainName, text: nginxContent)
-        steps.sh "cat ${domainName}"
+        // steps.sh "cat ${domainName}"
         steps.echo "-------------- End Nginx config --------------"
     }
 
