@@ -50,6 +50,8 @@ class Ansible {
             // write ansible hosts
             writeAnsibleHosts(hostIp, hostname, hostuser)
 
+            steps.sh 'ls -lrt'
+
             // execute ansible playbook
             anislbeShExecute(registryName,imageName,tag, portExpose, portOut)
             
