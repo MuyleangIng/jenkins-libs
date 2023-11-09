@@ -45,27 +45,27 @@ class Ansible {
                         int port_expose,
                         int port_out,
                         String credentialsId
-         **/
+        **/
 
-         // write ansible hosts
-            writeAnsibleHosts(params.hostIp, params.hostname, params.hostuser)
+        // write ansible hosts
+        writeAnsibleHosts(params.hostIp, params.hostname, params.hostuser)
 
-            steps.sh 'ls -lrt'
-            steps.sh 'cat hosts.ini'
+        steps.sh 'ls -lrt'
+        steps.sh 'cat hosts.ini'
 
-            steps.echo "Params: registryName: ${params.registryName}, imageName: ${params.imageName}, tag: ${params.tag}, portExpose: ${params.portExpose}, portOut: ${params.portOut}"
+        steps.echo "Params: registryName: ${params.registryName}, imageName: ${params.imageName}, tag: ${params.tag}, portExpose: ${params.portExpose}, portOut: ${params.portOut}"
 
-            // execute ansible playbook
-            ansibleShExecute(params.registryName, params.imageName, params.tag, params.portExpose, params.portOut)
+        // execute ansible playbook
+        ansibleShExecute(params.registryName, params.imageName, params.tag, params.portExpose, params.portOut, params.credentialsId)
 
     }
 
 
-    private ansibleShExecute(String registryName, String imageName, String tag, String portExpose, String portOut) {
+    private ansibleShExecute(String registryName, String imageName, String tag, String portExpose, String portOut, String credentialsId) {
         def playbookContent = steps.libraryResource('ansible/deploy.yml')
         steps.writeFile(file: 'playbook.yml', text: playbookContent)
 
-        steps.withCredentials([steps.usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+        steps.withCredentials([steps.usernamePassword(credentialsId: credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // def image = getImage(registryName,imageName,tag)
             steps.sh 'ls -lrt'
             steps.sh 'cat playbook.yml'
