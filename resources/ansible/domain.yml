@@ -6,7 +6,7 @@
   tasks:
     - name: "Add {{ domain_name }} to site-avialables config"
       copy:
-        src: domain.conf
+        src: "{{ domain_name }}"
         dest: "/etc/nginx/sites-available/{{ domain_name }}"
       
     - name: Link enable domain
