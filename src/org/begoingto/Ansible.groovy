@@ -64,6 +64,7 @@ class Ansible {
     private ansibleShExecute(String registryName, String imageName, String tag, String portExpose, String portOut, String credentialsId) {
         def playbookContent = steps.libraryResource('ansible/deploy.yml')
         steps.writeFile(file: 'playbook.yml', text: playbookContent)
+        steps.sh 'cat playbook.yml'
     }
 
     private ansiblePluginExecute(String registry_name,
