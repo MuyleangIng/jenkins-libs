@@ -53,7 +53,7 @@ class Ansible {
             writeAnsibleHosts(params.hostIp, params.hostname, params.hostuser)
 
             // execute ansible playbook
-            anislbeShExecute(params.hostIp,params.registryName,params.imageName,params.tag, params.portExpose, params.portOut)
+            anislbeShExecute(params.registryName,params.imageName,params.tag, params.portExpose, params.portOut)
             
         }
 
