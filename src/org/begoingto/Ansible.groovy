@@ -39,7 +39,7 @@ class Ansible {
          String hostIp,
                         String hostname,
                         String hostuser,
-                        String registry_name,
+                        String registryName,
                         String imageName, 
                         String tag, 
                         int port_expose,
@@ -47,25 +47,25 @@ class Ansible {
                         String credentialsId
          **/
         steps.withCredentials([steps.usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-            // def image = getImage(registry_name,imageName,tag)
+            // def image = getImage(registryName,imageName,tag)
 
             // write ansible hosts
             writeAnsibleHosts(params.hostIp, params.hostname, params.hostuser)
 
             // execute ansible playbook
-            anislbeShExecute(params.registryName,params.imageName,params.tag, params.portExpose, params.portOut)
+            anislbeShExecute("${params.registryName}",${params.imageName},${params.tag}, ${params.portExpose}, ${params.portOut})
             
         }
 
     }
 
 
-    private ansibleShExecute(String registry_name, String imageName,String tag, String port_expose, String port_out) {
+    private ansibleShExecute(String registryName, String imageName,String tag, String portExpose, String portOut) {
         def playbook = steps.libraryResource('ansible/playbook.yml')
         steps.writeFile(file: 'playbook.yml', text: playbook)
 
         steps.sh """
-        ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=${port_expose} port_out=${port_out}"
+        ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=${portExpose} port_out=${portOut}"
         """
     }
 
