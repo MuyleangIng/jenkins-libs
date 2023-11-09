@@ -46,7 +46,7 @@ class Ansible {
                         int port_out,
                         String credentialsId
          **/
-        steps.withCredentials([usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+        steps.withCredentials([steps.usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // def image = getImage(registry_name,imageName,tag)
 
             // write ansible hosts
