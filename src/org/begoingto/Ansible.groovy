@@ -3,10 +3,14 @@ package org.begoingto
 class Ansible {
     def steps
     def script
+    private String USERNAME 
+    private String PASSWORD
 
-    Ansible(steps,script) {
+    Ansible(steps,script, String username, String password) {
         this.steps = steps
         this.script = script
+        this.USERNAME = username
+        this.PASSWORD = password
     }
 
 
@@ -65,6 +69,7 @@ class Ansible {
         def playbookContent = steps.libraryResource('ansible/deploy.yml')
         steps.writeFile(file: 'playbook.yml', text: playbookContent)
         steps.sh 'cat playbook.yml'
+        steps.echo "Username: ${USERNAME}, Password: ${PASSWORD}"
     }
 
     private ansiblePluginExecute(String registry_name,
