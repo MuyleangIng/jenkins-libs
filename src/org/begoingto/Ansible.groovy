@@ -71,11 +71,6 @@ class Ansible {
             steps.echo "registry Name: ${USERNAME}"
 
         }
-        
-
-        // steps.sh """
-        // ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=${port_expose} port_out=${port_out}"
-        // """
     }
 
     private ansiblePluginExecute(String registry_name,
