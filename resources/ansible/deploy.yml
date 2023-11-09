@@ -11,9 +11,9 @@
         password: "{{ registry_password }}"
       when: "{{ registry_url }} != 'hub.docker.io'"
 
-      - name: Print a message when registry_url is not 'hub.docker.io'
-        debug:
-          msg: "The registry_url is not hub.docker.io, it's {{ registry_url }}"
+    - name: Print a message when registry_url is not 'hub.docker.io'
+      debug:
+        msg: "The registry_url is not hub.docker.io, it's {{ registry_url }}"
       when: "{{ registry_url }} != 'hub.docker.io'"
 
     - name: "Pull docker image {{ image_name }}:{{ image_tag }}"

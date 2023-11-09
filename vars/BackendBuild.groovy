@@ -25,6 +25,7 @@ def call(Map params) {
         notify.sendTelegram("Build failed⛔(<:>) Error: ${e.getMessage()}")
         echo "Build failed⛔(<:>) Error: ${e.getMessage()}"
         currentBuild.result = 'FAILURE'
+        throw e
     }
     
 }
