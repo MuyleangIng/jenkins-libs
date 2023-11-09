@@ -15,7 +15,7 @@ class Ansible {
         
         try {
             // Try to execute `ansible --version`
-            def output = sh(script: "ansible --version", returnStdout: true).trim()
+            def output = steps.sh(script: "ansible --version", returnStdout: true).trim()
             steps.echo "Ansible is available: \n${output}"
             return true
         } catch (Exception e) {
