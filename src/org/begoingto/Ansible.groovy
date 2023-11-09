@@ -56,20 +56,25 @@ class Ansible {
             steps.sh 'cat hosts.ini'
 
             // execute ansible playbook
-            // anislbeShExecute(params.registryName,params.imageName,params.tag, params.portExpose, params.portOut)
+            anislbeShExecute(params.registryName,params.imageName,params.tag, params.portExpose, params.portOut)
             
         }
 
     }
 
 
-    private ansibleShExecute(String registryName, String imageName,String tag, String port_expose, String port_out) {
+    private ansibleShExecute(String registryName, String imageName, String tag, String port_expose, String port_out) {
         def playbook = steps.libraryResource('ansible/playbook.yml')
         steps.writeFile(file: 'playbook.yml', text: playbook)
 
-        steps.sh """
-        ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=${port_expose} port_out=${port_out}"
-        """
+        steps.sh 'ls -lrt'
+        steps.sh 'cat playbook.yml'
+        steps.echo "registry Name: ${USERNAME}"
+
+
+        // steps.sh """
+        // ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=${port_expose} port_out=${port_out}"
+        // """
     }
 
     private ansiblePluginExecute(String registry_name,
