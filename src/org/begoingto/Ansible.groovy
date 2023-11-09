@@ -71,7 +71,7 @@ class Ansible {
         steps.sh 'cat playbook.yml'
         steps.echo "-------------- Execute Ansible playbook --------------"
         steps.sh """
-        ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=${port_expose} port_out=${port_out}"
+        ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registryName} container_name=${imageName} port_expose=${portExpose} port_out=${portOut}"
         """
         steps.echo "-------------- End Ansible playbook --------------"
     }
