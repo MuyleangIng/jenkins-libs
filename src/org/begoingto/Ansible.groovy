@@ -34,34 +34,38 @@ class Ansible {
     }
 
 
-    def ansiblePlaybook(String hostIp,
+    def ansiblePlaybook(Map params){
+        /***
+         String hostIp,
                         String hostname,
                         String hostuser,
                         String registry_name,
                         String imageName, 
                         String tag, 
+                        int port_expose,
+                        int port_out,
                         String credentialsId
-        ){
-        steps.withCredentials([usernamePassword(credentialsId: credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+         **/
+        steps.withCredentials([usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // def image = getImage(registry_name,imageName,tag)
 
             // write ansible hosts
-            writeAnsibleHosts(hostIp, hostname, hostuser)
+            writeAnsibleHosts(params.hostIp, params.hostname, params.hostuser)
 
             // execute ansible playbook
-            anislbeShExecute(host,registry_name,imageName,tag)
+            anislbeShExecute(params.host,params.registry_name,params.imageName,params.tag, params.port_expose, params.port_out)
             
         }
 
     }
 
 
-    private ansibleShExecute(String registry_name, String imageName,String tag) {
+    private ansibleShExecute(String registry_name, String imageName,String tag, String port_expose, String port_out) {
         def playbook = steps.libraryResource('ansible/playbook.yml')
         steps.writeFile(file: 'playbook.yml', text: playbook)
 
         steps.sh """
-        ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=3000 port_out=3100"
+        ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=${port_expose} port_out=${port_out}"
         """
     }
 
