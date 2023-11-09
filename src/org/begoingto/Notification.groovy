@@ -25,7 +25,7 @@ class Notification {
             from: script.env.MAIL_FROM, 
             replyTo: '', 
             subject: "${params.subject}", 
-            to: "${params.to}"
+            to: script.env.MAIL_TO
         )
         steps.echo "-------- End Send Mail Message --------"
     }
