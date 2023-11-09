@@ -12,7 +12,7 @@ class Notification {
     def sendTelegram(String message) {
         steps.echo "-------- Start Send Telegram Message --------"
         steps.sh """
-        curl -s -X POST https://api.telegram.org/bot${steps.env.BOT_ID}:${steps.env.BOT_TOKEN}/sendMessage -d chat_id=${steps.env.CHAT_ID} -d text="${message}"
+        curl -s -X POST https://api.telegram.org/bot${script.env.BOT_ID}:${script.env.BOT_TOKEN}/sendMessage -d chat_id=${script.env.CHAT_ID} -d text="${message}"
         """
         steps.echo "-------- End Send Telegram Message --------"
     }
@@ -22,7 +22,7 @@ class Notification {
         script.mail(bcc: '', 
             body: "${params.message}", 
             cc: '', 
-            from: steps.env.MAIL_FROM, 
+            from: script.env.MAIL_FROM, 
             replyTo: '', 
             subject: "${params.subject}", 
             to: "${params.to}"
