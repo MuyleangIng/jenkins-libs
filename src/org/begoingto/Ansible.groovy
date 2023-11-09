@@ -54,20 +54,22 @@ class Ansible {
             steps.sh 'cat hosts.ini'
 
             // execute ansible playbook
-            anislbeShExecute(params.registryName,params.imageName,params.tag, params.portExpose, params.portOut)
+            anislbeShExecute(params.registryName, params.imageName, params.tag, params.portExpose, params.portOut)
 
     }
 
 
-    private ansibleShExecute(String registryName, String imageName, String tag, String port_expose, String port_out) {
-        def playbook = steps.libraryResource('ansible/playbook.yml')
-        steps.writeFile(file: 'playbook.yml', text: playbook)
+    private ansibleShExecute(String registryName, String imageName, String tag, String portExpose, String portOut) {
+        def playbookContent = steps.libraryResource('ansible/playbook.yml')
+        steps.writeFile(file: 'playbook.yml', text: playbookContent)
+
+        steps.sh 'ls -lrt'
+        steps.sh 'cat playbook.yml'
 
         steps.withCredentials([steps.usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // def image = getImage(registryName,imageName,tag)
 
-            steps.sh 'ls -lrt'
-            steps.sh 'cat playbook.yml'
+            
             steps.echo "registry Name: ${USERNAME}"
 
         }
