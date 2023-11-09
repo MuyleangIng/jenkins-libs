@@ -62,7 +62,7 @@ class Ansible {
 
 
     private ansibleShExecute(String registryName, String imageName, String tag, String portExpose, String portOut) {
-        def playbookContent = steps.libraryResource('ansible/playbook.yml')
+        def playbookContent = steps.libraryResource('ansible/deploy.yml')
         steps.writeFile(file: 'playbook.yml', text: playbookContent)
         steps.sh 'ls -lrt'
         steps.sh 'cat playbook.yml'
