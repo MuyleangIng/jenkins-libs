@@ -61,14 +61,7 @@ class Ansible {
         steps.writeFile(file: 'playbook.yml', text: playbook)
 
         steps.sh """
-        ansible-playbook -i hosts.ini playbook.yml -e 'image_name=${imageName}' \ 
-        -e 'image_tag=${tag}' \
-        -e 'registry_username=${USERNAME}' \
-        -e 'registry_password=${PASSWORD}' \
-        -e 'registry_url=${registry_name}' \
-        -e 'container_name=${imageName}' \
-        -e 'port_expose=3000' \
-        -e 'port_out=3100'
+        ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=3000 port_out=3100"
         """
     }
 
