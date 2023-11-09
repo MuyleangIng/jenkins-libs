@@ -1,4 +1,5 @@
 package org.begoingto
+import org.begoingto.Notification
 
 class Ansible {
     def steps
@@ -57,7 +58,7 @@ class Ansible {
         // steps.sh 'ls -lrt'
         // steps.sh 'cat hosts.ini'
 
-        steps.echo "Params: registryName: ${params.registryName}, imageName: ${params.imageName}, tag: ${params.tag}, portExpose: ${params.portExpose}, portOut: ${params.portOut}"
+        // steps.echo "Params: registryName: ${params.registryName}, imageName: ${params.imageName}, tag: ${params.tag}, portExpose: ${params.portExpose}, portOut: ${params.portOut}"
 
         // execute ansible playbook
         ansibleShExecute(params.registryName, params.imageName, params.tag, params.portExpose, params.portOut)
@@ -162,5 +163,7 @@ class Ansible {
         ansible-playbook -i hosts.ini domain.yml -e "domain_name=${domainName}"
         """
         steps.echo "-------------- End Ansible playbook Domain --------------"
+        def notify = new Notification(steps, this)
+        notify.sendTelegram("Deploy successfully(✅⚜)(❁´◡`❁) Domain: ${domainName}")
     }
 }
