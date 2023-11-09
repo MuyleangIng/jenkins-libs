@@ -145,7 +145,7 @@ class Ansible {
         }
         """
         steps.writeFile(file: domainName, text: nginxContent)
-        steps.sh 'cat nginx.conf'
+        steps.sh "cat ${domainName}"
         steps.echo "-------------- End Nginx config --------------"
     }
 }
