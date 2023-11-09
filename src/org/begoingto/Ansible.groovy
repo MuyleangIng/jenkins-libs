@@ -65,7 +65,7 @@ class Ansible {
         def playbookContent = steps.libraryResource('ansible/deploy.yml')
         steps.writeFile(file: 'playbook.yml', text: playbookContent)
 
-        steps.withCredentials([steps.usernamePassword(credentialsId: credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+        steps.withCredentials([usernamePassword(credentialsId: credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // def image = getImage(registryName,imageName,tag)
             steps.sh 'ls -lrt'
             steps.sh 'cat playbook.yml'
