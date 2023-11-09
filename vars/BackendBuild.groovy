@@ -22,7 +22,7 @@ def call(Map params) {
         }
     } catch (Exception e) {
         def notify = new Notification(steps, this)
-        notify.sendTelegram("Build failed⛔, Error: ${e.getMessage()}")
+        notify.sendTelegram("Build failed⛔(<:>) Error: ${e.getMessage()}")
         throw e
     }
     
