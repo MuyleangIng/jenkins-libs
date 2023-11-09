@@ -1,0 +1,26 @@
+---
+- name: dpeloy application service 
+  hosts: all
+  become: yes
+  gather_facts: true
+  tasks: 
+    - name: "Login to Docker registry {{ registry_url }}"
+      docker_login:
+        registry_url: "{{ registry_url }}"
+        username: "{{ registry_username }}"
+        password: "{{ registry_password }}"
+
+    - name: "Pull docker image {{ image_name }}:{{ image_tag }}"
+      docker_image:
+        name: "{{ registry_url }}/{{ image_name }}:{{ image_tag }}"
+        source: pull
+      
+    - name: "Run container {{ container_name }} "
+      docker_container:
+        name: "{{ container_name }}"
+        image: "{{ registry_url }}/{{ image_name }}:{{ image_tag }}"
+        state: started
+        restart_policy: always
+        recreate: true
+        ports:
+          - "{{ port_out }}:{{ port_expose}}"
