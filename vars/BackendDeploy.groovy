@@ -9,7 +9,7 @@ def call(Map params){
             ansible.ansiblePlaybook(
                 hostIp: env.HOST_IP,
                 hostname: env.HOST_NAME,
-                hostuser: env.HOST_USER,
+                hostuser: env.HOST_USERNAME,
                 registryName: "${params.registryName}",
                 imageName: "${params.imageName}",
                 tag: "${params.imageTag}",
