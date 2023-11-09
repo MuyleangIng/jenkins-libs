@@ -1,6 +1,6 @@
 def call(Map params) {
-    sh "${params.gradleVersion}/bin/gradle --version"
-    sh "${params.gradleVersion}/bin/gradle clean build"
+    sh "${params.gradleHome}/bin/gradle --version"
+    sh "${params.gradleHome}/bin/gradle clean build"
     sh 'ls -lrt'
 
     writeDockerfile()
