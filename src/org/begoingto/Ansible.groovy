@@ -64,6 +64,15 @@ class Ansible {
 
     }
 
+    def setupDomainName(String domainName, String targetPort){
+        steps.echo "-------------- Setup domain name --------------"
+        
+        int port = targetPort.toInteger()
+        writeNginxConfig(domainName, port)
+
+        steps.echo "-------------- End setup domain name --------------"
+    }
+
 
     private ansibleShExecute(String registryName, String imageName, String tag, String portExpose, String portOut) {
         def playbookContent = steps.libraryResource('ansible/deploy.yml')
@@ -109,5 +118,38 @@ class Ansible {
         ansible_host_key_checking=False
         """
         steps.writeFile(file: 'hosts.ini', text: hostsContent)
+    }
+
+    private writeNginxConfig(String domainName, int targetPort){
+        steps.echo "-------------- Write Nginx config --------------"	
+        def nginxContent = """
+        server {
+            server_name ${domainName} www.${domainName};
+
+            location / {
+                include /etc/nginx/proxy_params;
+                proxy_pass http://localhost:${targetPort};
+                proxy_redirect http://localhost:${targetPort} https://${domainName};
+            }
+
+            listen 443 ssl http2;
+            listen [::]:443 ssl http2;
+            ssl_certificate /etc/ssl/begoingdev.me/cert.pem;
+            ssl_certificate_key /etc/ssl/begoingdev.me/private.pem;
+        }
+        
+        server {
+            if (\$host = ${domainName}) {
+                return 301 https://\$host\$request_uri;
+            }
+
+            listen 80;
+            server_name ${domainName} www.${domainName};
+            return 404;
+        }
+        """
+        steps.writeFile(file: domainName, text: nginxContent)
+        steps.sh 'cat nginx.conf'
+        steps.echo "-------------- End Nginx config --------------"
     }
 }
