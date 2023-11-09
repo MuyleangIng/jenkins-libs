@@ -1,10 +1,6 @@
 def call(Map params) {
-    sh "${params.gradleHome}/bin/gradle --version"
     sh "${params.gradleHome}/bin/gradle clean build"
-    sh 'ls -lrt'
-
     writeDockerfile()
-
     withCredentials([usernamePassword(credentialsId: params.registryCredentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
         // docker build
         dockerBuild(username: USERNAME, 
