@@ -64,8 +64,13 @@ class Ansible {
     private ansibleShExecute(String registryName, String imageName, String tag, String portExpose, String portOut) {
         def playbookContent = steps.libraryResource('ansible/deploy.yml')
         steps.writeFile(file: 'playbook.yml', text: playbookContent)
-        steps.sh 'ls -lrt'
-        steps.sh 'cat playbook.yml'
+
+        steps.withCredentials([steps.usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+            // def image = getImage(registryName,imageName,tag)
+            steps.sh 'ls -lrt'
+            steps.sh 'cat playbook.yml'
+            steps.echo "registry Name: ${USERNAME}"
+        }
     }
 
     private ansiblePluginExecute(String registry_name,
