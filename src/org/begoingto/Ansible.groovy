@@ -34,26 +34,24 @@ class Ansible {
     }
 
 
-    def ansiblePlaybook(Map params){
-        /***
-         String hostIp,
+    def ansiblePlaybook(String hostIp,
                         String hostname,
                         String hostuser,
                         String registryName,
                         String imageName, 
                         String tag, 
-                        int port_expose,
-                        int port_out,
+                        String portExpose,
+                        String portOut,
                         String credentialsId
-         **/
-        steps.withCredentials([steps.usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+        ){
+        steps.withCredentials([steps.usernamePassword(credentialsId: credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // def image = getImage(registryName,imageName,tag)
 
             // write ansible hosts
-            writeAnsibleHosts(params.hostIp, params.hostname, params.hostuser)
+            writeAnsibleHosts(hostIp, hostname, hostuser)
 
             // execute ansible playbook
-            anislbeShExecute("${params.registryName}",${params.imageName},${params.tag}, ${params.portExpose}, ${params.portOut})
+            anislbeShExecute(registryName,imageName,tag, portExpose, portOut)
             
         }
 
