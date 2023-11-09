@@ -103,7 +103,7 @@ class Ansible {
     private writeAnsibleHosts(String hostIp, String hostname, String hostuser) {
         def hostsContent = """
         [all]
-        ${hostname} anislbe_host=${hostIp}
+        ${hostname} ansible_host=${hostIp}
         [all:vars]
         ansible_user=${hostuser}
         ansible_host_key_checking=False
