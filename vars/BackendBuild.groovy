@@ -10,11 +10,10 @@ def call(Map params) {
         dockerBuild(username: USERNAME, 
             imageName: params.imageName, 
             tag: params.tag,
-            registryCredentialsId: params.registryCredentialsId,
             registryName: params.registryName    
         )
         // docker push
-        if(params.registryCredentialsId == 'hub.docker.io'){
+        if(params.registryName == 'hub.docker.io'){
             sh "docker login -u ${USERNAME} -p ${PASSWORD}"
             sh "docker push ${USERNAME}/${params.imageName}:${params.tag}"
         }else{
@@ -31,7 +30,7 @@ def writeDockerfile(){
 
 def String dockerBuild(Map params){
     def dockerImage = "${params.username}/${params.imageName}:${params.tag}"
-    if(params.registryCredentialsId != 'hub.docker.io'){
+    if(params.registryName != 'hub.docker.io'){
         dockerImage = "${params.registryName}/${params.imageName}:${params.tag}"
     }
     sh "docker build -t ${dockerImage} ."
