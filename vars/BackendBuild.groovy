@@ -25,8 +25,8 @@ def call(Map params) {
 }
 
 def writeDockerfile(){
-    def dockerfile = steps.libraryResource('docker/grade.dockerfile')
-    steps.writeFile(file: 'Dockerfile', text: dockerfile)
+    def dockerfile = libraryResource('docker/grade.dockerfile')
+    writeFile(file: 'Dockerfile', text: dockerfile)
 }
 
 def String dockerBuild(Map params){
