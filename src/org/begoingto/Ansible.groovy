@@ -60,16 +60,20 @@ class Ansible {
         steps.echo "Params: registryName: ${params.registryName}, imageName: ${params.imageName}, tag: ${params.tag}, portExpose: ${params.portExpose}, portOut: ${params.portOut}"
 
         // execute ansible playbook
-        ansibleShExecute(params.registryName, params.imageName, params.tag, params.portExpose, params.portOut, params.credentialsId)
+        ansibleShExecute(params.registryName, params.imageName, params.tag, params.portExpose, params.portOut)
 
     }
 
 
-    private ansibleShExecute(String registryName, String imageName, String tag, String portExpose, String portOut, String credentialsId) {
+    private ansibleShExecute(String registryName, String imageName, String tag, String portExpose, String portOut) {
         def playbookContent = steps.libraryResource('ansible/deploy.yml')
         steps.writeFile(file: 'playbook.yml', text: playbookContent)
         steps.sh 'cat playbook.yml'
-        steps.echo "Username: ${USERNAME}, Password: ${PASSWORD}"
+        steps.echo "-------------- Execute Ansible playbook --------------"
+        steps.sh """
+        ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=${port_expose} port_out=${port_out}"
+        """
+        steps.echo "-------------- End Ansible playbook --------------"
     }
 
     private ansiblePluginExecute(String registry_name,
@@ -107,10 +111,3 @@ class Ansible {
         steps.writeFile(file: 'hosts.ini', text: hostsContent)
     }
 }
-
-/**
-
-// steps.sh """
-        // ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=${port_expose} port_out=${port_out}"
-        // """
-**/

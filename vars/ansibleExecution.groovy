@@ -4,7 +4,7 @@ def call(Map params) {
     def username = 'default'
     def password = 'default'
 
-    withCredentials([usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+    withCredentials([usernamePassword(credentialsId: params.registryCredentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
         steps.echo "registry Name: ${USERNAME}"
         username = USERNAME
         password = PASSWORD
