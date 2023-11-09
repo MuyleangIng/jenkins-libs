@@ -9,10 +9,10 @@ class Notification {
         this.script = script
     }
 
-    def sendTelegram(Map params) {
+    def sendTelegram(String message) {
         steps.echo "-------- Start Send Telegram Message --------"
         steps.sh """
-        curl -s -X POST https://api.telegram.org/bot${params.botId}:${params.botToken}/sendMessage -d chat_id=${params.chatId} -d text="${params.message}"
+        curl -s -X POST https://api.telegram.org/bot${steps.env.BOT_ID}:${steps.env.BOT_TOKEN}/sendMessage -d chat_id=${steps.env.CHAT_ID} -d text="${message}"
         """
         steps.echo "-------- End Send Telegram Message --------"
     }
@@ -22,7 +22,7 @@ class Notification {
         script.mail(bcc: '', 
             body: "${params.message}", 
             cc: '', 
-            from: "${params.from}", 
+            from: steps.env.MAIL_FROM, 
             replyTo: '', 
             subject: "${params.subject}", 
             to: "${params.to}"
