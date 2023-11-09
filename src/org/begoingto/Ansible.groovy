@@ -46,10 +46,8 @@ class Ansible {
                         int port_out,
                         String credentialsId
          **/
-        steps.withCredentials([steps.usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-            // def image = getImage(registryName,imageName,tag)
 
-            // write ansible hosts
+         // write ansible hosts
             writeAnsibleHosts(params.hostIp, params.hostname, params.hostuser)
 
             steps.sh 'ls -lrt'
@@ -57,8 +55,6 @@ class Ansible {
 
             // execute ansible playbook
             anislbeShExecute(params.registryName,params.imageName,params.tag, params.portExpose, params.portOut)
-            
-        }
 
     }
 
@@ -67,10 +63,15 @@ class Ansible {
         def playbook = steps.libraryResource('ansible/playbook.yml')
         steps.writeFile(file: 'playbook.yml', text: playbook)
 
-        steps.sh 'ls -lrt'
-        steps.sh 'cat playbook.yml'
-        steps.echo "registry Name: ${USERNAME}"
+        steps.withCredentials([steps.usernamePassword(credentialsId: params.credentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+            // def image = getImage(registryName,imageName,tag)
 
+            steps.sh 'ls -lrt'
+            steps.sh 'cat playbook.yml'
+            steps.echo "registry Name: ${USERNAME}"
+
+        }
+        
 
         // steps.sh """
         // ansible-playbook -i hosts.ini playbook.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registry_name} container_name=${imageName} port_expose=${port_expose} port_out=${port_out}"
