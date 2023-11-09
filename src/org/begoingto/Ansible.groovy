@@ -64,13 +64,9 @@ class Ansible {
 
     }
 
-    def setupDomainName(String domainName, String targetPort){
-        steps.echo "-------------- Setup domain name --------------"
-        
-        int port = targetPort.toInteger()
-        writeNginxConfig(domainName, port)
-
-        steps.echo "-------------- End setup domain name --------------"
+    def setupDomainName(Map params){
+        int port = params.targetPort.toInteger()
+        writeNginxConfig(params.domainName, port)
     }
 
 
