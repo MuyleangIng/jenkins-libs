@@ -56,7 +56,7 @@ class Ansible {
             steps.echo "Params: registryName: ${params.registryName}, imageName: ${params.imageName}, tag: ${params.tag}, portExpose: ${params.portExpose}, portOut: ${params.portOut}"
 
             // execute ansible playbook
-            anislbeShExecute(params.registryName, params.imageName, params.tag, params.portExpose, params.portOut)
+            ansibleShExecute(params.registryName, params.imageName, params.tag, params.portExpose, params.portOut)
 
     }
 
