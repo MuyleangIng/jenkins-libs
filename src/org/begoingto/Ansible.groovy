@@ -109,7 +109,7 @@ class Ansible {
 
     
     private String getImage(String registry_name,String imageName, String tag) {
-        if(registry_name == 'hub.docker.io'){
+        if(registry_name == 'docker.io'){
             return "${USERNAME}/${imageName}:${tag}"
         }
         return "${registry_name}/${imageName}:${tag}"

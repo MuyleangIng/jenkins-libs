@@ -4,7 +4,7 @@
   become: yes
   gather_facts: true
   vars:
-    registry_default: "hub.docker.io"
+    registry_default: "docker.io"
   tasks: 
     - name: "Login to Docker registry {{ registry_url }}"
       docker_login:

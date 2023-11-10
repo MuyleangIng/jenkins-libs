@@ -2,11 +2,9 @@ import org.begoingto.Notification
 
 def call(Map params) {
     try {
-        sh "${params.gradleHome}/bin/gradle clean build"
-        writeDockerfile()
         withCredentials([usernamePassword(credentialsId: params.registryCredentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // docker build
-            dockerBuild(username: USERNAME, 
+            def imageFull = dockerBuild(username: USERNAME, 
                 imageName: params.imageName, 
                 tag: params.tag,
                 registryName: params.registryName    
@@ -14,10 +12,10 @@ def call(Map params) {
             // docker push
             if(params.registryName == 'docker.io'){
                 sh "docker login -u ${USERNAME} -p ${PASSWORD}"
-                sh "docker push ${USERNAME}/${params.imageName}:${params.tag}"
+                sh "docker push ${imageFull}"
             }else{
                 sh "docker login -u ${USERNAME} -p ${PASSWORD} ${params.registryName}"
-                sh "docker push ${params.registryName}/${params.imageName}:${params.tag}"
+                sh "docker push ${imageFull}"
             }
         }
     } catch (Exception e) {
@@ -28,11 +26,6 @@ def call(Map params) {
         throw e
     }
     
-}
-
-def writeDockerfile(){
-    def dockerfile = libraryResource('docker/gradle.Dockerfile')
-    writeFile(file: 'Dockerfile', text: dockerfile)
 }
 
 def String dockerBuild(Map params){
