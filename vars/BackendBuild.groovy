@@ -2,7 +2,7 @@ import org.begoingto.Notification
 
 def call(Map params) {
     try {
-        def packageType = env.PACKAGE_TYPE.startsWith("gradle") ? "gradle clean build" : "maven clean package";
+        def packageType = env.PACKAGE_TYPE.startsWith("gradle") ? "gradle clean build" : "mvn clean package";
         def gradleHome = tool env.PACKAGE_TYPE
         sh "${gradleHome}/bin/${packageType}"
         writeDockerfile()
