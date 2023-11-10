@@ -21,7 +21,7 @@ def call(Map params){
             echo "--------------------Setup Domain Name-------------------------"
             ansible.setupDomainName(domainName: "${params.domainName}", targetPort: "${params.targetPort}")
             echo "--------------------End Setup Domain Name-------------------------"
-            notify.sendTelegram("Deploy successfully(✅⚜)(❁´◡`❁) Domain: ${domainName}")
+            notify.sendTelegram("Deploy successfully✅ Domain: ${domainName}")
         }
 
     }catch (Exception e) {
