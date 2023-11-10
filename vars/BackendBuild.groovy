@@ -42,6 +42,7 @@ def String dockerBuild(Map params){
     if(params.registryName != 'docker.io'){
         dockerImage = "${params.registryName}/${params.imageName}:${params.tag}"
     }
+    sh 'cat Dockerfile'
     sh "docker build -t ${dockerImage} ."
     return dockerImage
 }
