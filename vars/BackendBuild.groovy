@@ -38,7 +38,7 @@ def call(Map params) {
 
 def writeDockerfile(){
     def dockerfile = libraryResource("docker/gradle.Dockerfile")
-    if(!env.PACKAGE_TYPE != 'Gradle'){
+    if(env.PACKAGE_TYPE != 'Gradle'){
         dockerfile = libraryResource("docker/maven.Dockerfile")
     }
     writeFile(file: 'Dockerfile', text: dockerfile)
