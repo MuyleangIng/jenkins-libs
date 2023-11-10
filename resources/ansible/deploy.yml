@@ -3,13 +3,15 @@
   hosts: all
   become: yes
   gather_facts: true
+  vars:
+    registry_default: "hub.docker.io"
   tasks: 
     - name: "Login to Docker registry {{ registry_url }}"
       docker_login:
         registry_url: "{{ registry_url }}"
         username: "{{ registry_username }}"
         password: "{{ registry_password }}"
-      when: "{{ registry_url }} != 'hub.docker.io'"
+      when: registry_url != registry_default
 
     - name: "Pull docker image {{ image_name }}:{{ image_tag }}"
       docker_image:
