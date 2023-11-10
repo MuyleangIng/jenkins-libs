@@ -13,15 +13,15 @@
         password: "{{ registry_password }}"
       when: registry_url != registry_default
 
-    - name: "Pull docker image {{ image_name }}:{{ image_tag }}"
+    - name: "Pull docker image {{ image_full }}"
       docker_image:
-        name: "{{ registry_url }}/{{ image_name }}:{{ image_tag }}"
+        name: "{{ image_full }}"
         source: pull
       
     - name: "Run container {{ container_name }} "
       docker_container:
         name: "{{ container_name }}"
-        image: "{{ registry_url }}/{{ image_name }}:{{ image_tag }}"
+        image: "{{ image_full }}"
         state: started
         restart_policy: always
         recreate: true

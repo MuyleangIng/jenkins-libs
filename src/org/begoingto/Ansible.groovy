@@ -81,8 +81,9 @@ class Ansible {
         def playbookContent = steps.libraryResource('ansible/deploy.yml')
         steps.writeFile(file: 'deploy.yml', text: playbookContent)
         steps.echo "-------------- Execute Ansible playbook --------------"
+        def imageFull = getImage(registryName, imageName, tag)
         steps.sh """
-        ansible-playbook -i hosts.ini deploy.yml -e "image_name=${imageName} image_tag=${tag} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registryName} container_name=${imageName} port_expose=${portExpose} port_out=${portOut}"
+        ansible-playbook -i hosts.ini deploy.yml -e "image_full=${imageFull} registry_username=${USERNAME} registry_password=${PASSWORD} registry_url=${registryName} container_name=${imageName} port_expose=${portExpose} port_out=${portOut}"
         """
         steps.echo "-------------- End Ansible playbook --------------"
     }
@@ -108,6 +109,9 @@ class Ansible {
 
     
     private String getImage(String registry_name,String imageName, String tag) {
+        if(registry_name == 'hub.docker.io'){
+            return "${USERNAME}/${imageName}:${tag}"
+        }
         return "${registry_name}/${imageName}:${tag}"
     }
 
