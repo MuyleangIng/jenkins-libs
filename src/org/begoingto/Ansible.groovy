@@ -167,7 +167,5 @@ class Ansible {
         ansible-playbook -i hosts.ini domain.yml -e "domain_name=${domainName}"
         """
         steps.echo "-------------- End Ansible playbook Domain --------------"
-        def notify = new Notification(steps, this)
-        notify.sendTelegram("Deploy successfully(✅⚜)(❁´◡`❁) Domain: ${domainName}")
     }
 }

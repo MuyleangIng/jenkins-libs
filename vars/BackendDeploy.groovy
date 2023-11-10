@@ -2,6 +2,7 @@ import org.begoingto.Notification
 import org.begoingto.Ansible
 
 def call(Map params){
+    def notify = new Notification(steps, this)
     try {
         withCredentials([usernamePassword(credentialsId: params.registryCredentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             def ansible = new Ansible(steps,this, USERNAME, PASSWORD)
@@ -20,10 +21,10 @@ def call(Map params){
             echo "--------------------Setup Domain Name-------------------------"
             ansible.setupDomainName(domainName: "${params.domainName}", targetPort: "${params.targetPort}")
             echo "--------------------End Setup Domain Name-------------------------"
+            notify.sendTelegram("Deploy successfully(✅⚜)(❁´◡`❁) Domain: ${domainName}")
         }
 
     }catch (Exception e) {
-        def notify = new Notification(steps, this)
         notify.sendTelegram("Deploy failed⛔(<:>) Error: ${e.getMessage()}")
         echo "Build failed⛔(<:>) Error: ${e.getMessage()}"
         currentBuild.result = 'FAILURE'
