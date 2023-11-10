@@ -2,9 +2,13 @@ import org.begoingto.Notification
 
 def call(Map params) {
     try {
-        def packageType = env.PACKAGE_TYPE.startsWith("gradle") ? "gradle clean build" : "mvn clean package";
-        def gradleHome = tool env.PACKAGE_TYPE
-        sh "${gradleHome}/bin/${packageType}"
+        def gradleHome = tool env.GRADLE_VERSION
+        def commandBuild = 'gradle clean build'
+        if(env.PACKAGE_TYPE != 'Gradle'){
+            gradleHome = tool env.MAVEN_VERSION
+            commandBuild= 'mvn clean package'
+        }
+        sh "${gradleHome}/bin/${commandBuild}"
         writeDockerfile()
         withCredentials([usernamePassword(credentialsId: params.registryCredentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // docker build
@@ -34,7 +38,7 @@ def call(Map params) {
 
 def writeDockerfile(){
     def dockerfile = libraryResource("docker/gradle.Dockerfile")
-    if(!env.PACKAGE_TYPE.startsWith('gradle')){
+    if(!env.PACKAGE_TYPE != 'Gradle'){
         dockerfile = libraryResource("docker/maven.Dockerfile")
     }
     writeFile(file: 'Dockerfile', text: dockerfile)
