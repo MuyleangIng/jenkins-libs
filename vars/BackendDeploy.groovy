@@ -4,14 +4,14 @@ import org.begoingto.Ansible
 def call(Map params){
     def notify = new Notification(steps, this)
     try {
-        withCredentials([usernamePassword(credentialsId: params.registryCredentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+        withCredentials([usernamePassword(credentialsId: env.REGISTRY_CREDENTIALS_ID, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             def ansible = new Ansible(steps,this, USERNAME, PASSWORD)
 
             ansible.ansiblePlaybook(
                 hostIp: env.HOST_IP,
                 hostname: env.HOST_NAME,
                 hostuser: env.HOST_USERNAME,
-                registryName: "${params.registryName}",
+                registryName: env.REGISTRY_NAME,
                 imageName: "${params.imageName}",
                 tag: "${params.imageTag}",
                 portExpose: "${params.exposePort}",

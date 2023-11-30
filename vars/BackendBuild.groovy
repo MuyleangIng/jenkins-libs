@@ -10,20 +10,20 @@ def call(Map params) {
         }
         sh "${gradleHome}/bin/${commandBuild}"
         writeDockerfile()
-        withCredentials([usernamePassword(credentialsId: params.registryCredentialsId, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+        withCredentials([usernamePassword(credentialsId: env.REGISTRY_CREDENTIALS_ID, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             // docker build
             dockerBuild(username: USERNAME, 
                 imageName: params.imageName, 
                 tag: params.tag,
-                registryName: params.registryName    
+                registryName: env.REGISTRY_NAME    
             )
             // docker push
-            if(params.registryName == 'docker.io'){
+            if(env.REGISTRY_NAME == 'docker.io'){
                 sh "docker login -u ${USERNAME} -p ${PASSWORD}"
                 sh "docker push ${USERNAME}/${params.imageName}:${params.tag}"
             }else{
-                sh "docker login -u ${USERNAME} -p ${PASSWORD} ${params.registryName}"
-                sh "docker push ${params.registryName}/${params.imageName}:${params.tag}"
+                sh "docker login -u ${USERNAME} -p ${PASSWORD} ${env.REGISTRY_NAME}"
+                sh "docker push ${env.REGISTRY_NAME}/${params.imageName}:${params.tag}"
             }
         }
     } catch (Exception e) {
@@ -46,8 +46,8 @@ def writeDockerfile(){
 
 def String dockerBuild(Map params){
     def dockerImage = "${params.username}/${params.imageName}:${params.tag}"
-    if(params.registryName != 'docker.io'){
-        dockerImage = "${params.registryName}/${params.imageName}:${params.tag}"
+    if(env.REGISTRY_NAME != 'docker.io'){
+        dockerImage = "${env.REGISTRY_NAME}/${params.imageName}:${params.tag}"
     }
     sh 'cat Dockerfile'
     sh "docker build -t ${dockerImage} ."
