@@ -32,25 +32,25 @@ class NodeJsDeployer {
         createDockerfile(projectType)
     }
 
-    private checkFileExists(String fileName) {
-        def file = new File(script.pwd(), fileName)
-        return file.exists()
-    }
+    // private checkFileExists(String fileName) {
+    //     def file = new File(script.pwd(), fileName)
+    //     return file.exists()
+    // }
 
     private createDockerfile(String projectType){
         def dockerfileContent = ""
         if(projectType == 'react'){
-            def dist = checkFileExists('vite.config.js') ? 'dist' : 'build'
+            def buildPath = script.fileExists('vite.config.js') ? 'dist' : 'build'
             dockerfileContent = """
             FROM nginx:1.23.2
             RUN rm -rf /usr/share/nginx/html/*
             COPY ./%s/ /usr/share/nginx/html 
             EXPOSE 80 
             CMD ["nginx", "-g", "daemon off;"]
-            """.formatted(dist)
+            """.formatted(buildPath)
 
             steps.writeFile(file: 'Dockerfile', text: dockerfileContent)
-            
+
         }else if(projectType == 'next') {
             dockerfileContent = """
             # using lightweight alpine image for final image
